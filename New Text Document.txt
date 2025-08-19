@@ -1,0 +1,84 @@
+from collections import Counter
+
+word_counts = Counter(words)
+sorted_word_counts = sorted(word_counts.items(), key=lambda item: item[1], reverse=True)
+
+most_common_words = word_counts.most_common(20)
+print(most_common_words)
+
+from collections import Counter
+
+words = []
+for tweet in df['Text']:
+    words += re.findall(r'\w+', tweet.lower())
+
+word_counts = Counter(words)
+top_20_words = word_counts.most_common(20)
+
+print(top_20_words)
+
+accounts = []
+for tweet in df['Text']:
+    accounts += re.findall(r'@\w+', tweet.lower())
+
+account_counts = Counter(accounts)
+top_10_accounts = account_counts.most_common(10)
+
+print(top_10_accounts)
+
+import pandas as pd
+
+# Đọc dữ liệu từ file csv
+df = pd.read_csv('data/elonmusk_tweets.csv')
+
+# Chuyển đổi cột "created_at" sang định dạng datetime
+df['created_at'] = pd.to_datetime(df['created_at'], format='%Y-%m-%d %H:%M:%S')
+
+# Thêm cột "hour" để lưu giờ của mỗi bài tweet
+df['hour'] = df['created_at'].dt.hour
+
+# Nhóm các bài tweet theo giờ và đếm số lượng bài tweet trong mỗi giờ
+tweet_count_by_hour = df.groupby('hour').size().reset_index(name='count')
+
+# Tìm giờ có số lượng bài tweet nhiều nhất
+max_hour = tweet_count_by_hour.loc[tweet_count_by_hour['count'].idxmax()]['hour']
+
+print(f"Khoảng thời gian trong ngày tác giả Elon Musk đăng bài nhiều nhất là: {max_hour}:00 - {max_hour+1}:00")
+
+# Đọc dữ liệu từ file và lưu vào danh sách các cặp user_id được theo dõi
+following = []
+with open('data/twitter_following.txt', 'r') as f:
+    for line in f:
+        user_id1, user_id2 = line.strip().split()
+        following.append((user_id1, user_id2))
+
+# Thống kê số lượng người theo dõi của mỗi tài khoản người dùng
+followers = {}
+for user_id1, user_id2 in following:
+    if user_id2 not in followers:
+        followers[user_id2] = 1
+    else:
+        followers[user_id2] += 1
+
+# Liệt kê top 5 người dùng có nhiều theo dõi nhất
+top_users = sorted(followers.items(), key=lambda x: x[1], reverse=True)[:5]
+print("Top 5 người dùng có nhiều theo dõi nhất:")
+for user_id, num_followers in top_users:
+    print(f"{user_id}: {num_followers} người theo dõi")
+
+# Liệt kê tất cả các cặp người dùng theo dõi lẫn nhau
+mutual_followers = set()
+for user_id1, user_id2 in following:
+    if (user_id2, user_id1) in following:
+        mutual_followers.add((user_id1, user_id2))
+        mutual_followers.add((user_id2, user_id1))
+
+print("Các cặp người dùng theo dõi lẫn nhau:")
+for user_id1, user_id2 in mutual_followers:
+    print(f"{user_id1} - {user_id2}")
+
+extension vscode
+pylance
+python
+pretier - code form
+jupiter
